@@ -3,18 +3,20 @@
 require("db.php");
 
 $token = $_GET["token"];
+echo $token;
 
-$token_hash = hash("sha256", $token);
+// $token_hash = hash("sha256", $token);
 
 $db = new db();
 
-$condition = "reset_token_hash = '$token_hash'";
-$result = $db->get_data('users', '*', $condition);
+// $condition = "reset_token_hash = '$token_hash'";
+$condition = "reset_token_hash = '$token'";
+$result = $db->get_data('forgetpassword', '*', $condition);
 
 $user = $result->fetch(PDO::FETCH_ASSOC);
 
 if ($user === false) {
-    die("Token not found");
+    die("Token not found..");
 }
 
 

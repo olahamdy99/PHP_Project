@@ -10,7 +10,6 @@ class db
 
     public function __construct()
     {
-
         $dsn = "mysql:host=$this->host;dbname=$this->dbname;port=$this->port";
         $this->connection = new PDO($dsn, $this->user, $this->password);
     }
@@ -35,15 +34,16 @@ class db
     // {
     //     return $this->connection->query("insert into $table($cols) values( $values)");
     // }
-    public function insert_data($table, $cols, $values, $params)
+    
+  public function insert_data($table, $cols, $values, $params)
     {
         $sql = "INSERT INTO $table ($cols) VALUES ($values)";
         
         $stmt = $this->connection->prepare($sql);
-        
+
         return $stmt->execute($params);
     }
-    
+      
 
     public function update_data($table, $data, $condition)
 {
