@@ -14,14 +14,14 @@ echo"$user_id";
 
 $token = bin2hex(random_bytes(16));
 
-// $token_hash = hash("sha256", $token);
+$token_hash = hash("sha256", $token);
 
 $expiry = date("Y-m-d H:i:s", time() + 60 * 5);
 
 
 
-// $data = "reset_token_hash = '$token_hash', reset_token_expires_at = '$expiry', user_id = '$user_id'";
-$data = "reset_token_hash = '$token', reset_token_expires_at = '$expiry', user_id = '$user_id'";
+$data = "reset_token_hash = '$token_hash', reset_token_expires_at = '$expiry', user_id = '$user_id'";
+// $data = "reset_token_hash = '$token', reset_token_expires_at = '$expiry', user_id = '$user_id'";
 
 $cols='reset_token_hash,reset_token_expires_at,user_id';
 $values='?,?,?';
@@ -36,8 +36,8 @@ $result = $db->update_data('forgetpassword', $data , $condition1);
 }
 else{
     
-// $result = $db->insert_data('forgetpassword', $cols, $values, [$token_hash, $expiry, $user_id]); 
-$result = $db->insert_data('forgetpassword', $cols, $values, [$token, $expiry, $user_id]); 
+$result = $db->insert_data('forgetpassword', $cols, $values, [$token_hash, $expiry, $user_id]); 
+// $result = $db->insert_data('forgetpassword', $cols, $values, [$token, $expiry, $user_id]); 
 
 }
 

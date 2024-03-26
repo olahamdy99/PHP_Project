@@ -10,8 +10,8 @@ if ($password !== $passwordConfirmation) {
     die("Passwords must match");
 }
 
-// $token_hash = hash("sha256", $token);
-$token_hash =$token ;
+$token_hash = hash("sha256", $token);
+// $token_hash =$token ;
 $db = new db();
 
 $sql = "SELECT * FROM forgetpassword WHERE reset_token_hash = :token_hash";
