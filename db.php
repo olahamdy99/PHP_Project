@@ -2,7 +2,7 @@
 class db
 {
     private $host = "localhost";
-    private $dbname = "osassuit";
+    private $dbname = "gose_cafeteria";
     private $user = "root";
     private $port=4306;
     private $password = "";
@@ -18,14 +18,33 @@ class db
     {
         return $this->connection;
     }
-    public function get_data($table,$condition=1)
-    {
-        return $this->connection->query("select * from $table where $condition");
+    public function get_data($table, $columns = '*', $condition = null)
+{
+    $query = "SELECT $columns FROM $table";
+    if ($condition) {
+        $query .= " WHERE $condition";
     }
-    public function insert_data($table,$cols, $values)
+    return $this->connection->query($query);
+}
+
+    // public function get_data($table,$condition=1)
+    // {
+    //     return $this->connection->query("select * from $table where $condition");
+    // }
+    // public function insert_data($table,$cols, $values)
+    // {
+    //     return $this->connection->query("insert into $table($cols) values( $values)");
+    // }
+    public function insert_data($table, $cols, $values, $params)
     {
-        return $this->connection->query("insert into $table($cols) values( $values)");
+        $sql = "INSERT INTO $table ($cols) VALUES ($values)";
+        
+        $stmt = $this->connection->prepare($sql);
+        
+        return $stmt->execute($params);
     }
+    
+
     public function update_data($table, $data, $condition)
 {
     return $this->connection->query("update $table set $data where $condition");
