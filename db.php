@@ -29,6 +29,7 @@ class db
         return $this->connection->query($query);
    }
 
+
     // public function get_data($table,$condition=1)
     // {
     //     return $this->connection->query("select * from $table where $condition");
@@ -46,7 +47,6 @@ class db
 
         return $stmt->execute($params);
     }
-
     public function insertData($table, $cols, $values){
 
         $sql = "INSERT INTO $table ($cols) VALUES ($values)";
@@ -82,4 +82,5 @@ class db
 }
 
 ?>
+
 
