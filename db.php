@@ -6,7 +6,7 @@ class db
     private $host = "localhost";
     private $dbname = "gose_cafeteria";
     private $user = "root";
-    private $port=3306;
+    private $port=4306;
     private $password = "";
     private $connection = "";
 
