@@ -75,6 +75,17 @@ foreach ($result as $row) {
                         ?>
                     </div>
                     <div class="mb-3">
+                        <label for="exampleInputQuantity" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="exampleInputQuantity" name="quantity">
+                        <?php
+                            if (isset($_SESSION['errors']['quantityProduct_error'])) {
+                                echo "<div class='alert alert-warning'>{$_SESSION['errors']['quantityProduct_error']}</div>";
+                                unset($_SESSION['errors']['quantityProduct_error']); 
+                            }
+                        ?>
+                    </div>
+                    <div class="mb-3">
+
                         <label for="productCategory" class="form-label">Category</label>
                         <select class="form-select" id="productCategory" name="category">
                             <option selected>Select Category</option>
