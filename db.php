@@ -7,6 +7,7 @@ class db
     private $dbname = "gose_cafeteria";
     private $user = "root";
     private $port = 4306;
+
     private $password = "";
     private $connection = "";
 
@@ -19,6 +20,7 @@ class db
     {
         return $this->connection;
     }
+
     // public function get_data($table, $columns = "*", $condition = null) {
     //     $query = "SELECT $columns FROM `$table`";
     //     if ($condition) {
@@ -63,39 +65,61 @@ class db
 
         return $stmt->execute($params);
     }
-    public function insertData($table, $cols, $values)
-    {
+    public function insertData($table, $cols, $values){
 
         $sql = "INSERT INTO $table ($cols) VALUES ($values)";
-
+    
         try {
-            $result = $this->connection->query($sql);
+            $result = $this->connection->query($sql); 
             if ($result) {
-                return true;
+                return true; 
             } else {
-                return false;
+                return false; 
             }
         } catch (PDOException $e) {
-            if ($e->getCode() == '23000') {
-                $_SESSION['add_error'] = "already exists";
+            if ($e->getCode() == '23000') { 
+                $_SESSION['add_error'] = "already exists"; 
             } else {
-                $_SESSION['add_error'] = "An error occurred while adding";
-                return false;
-            }
+                $_SESSION['add_error'] = "An error occurred while adding"; 
+            return false; 
+           }
         }
     }
+    
 
+      
 
-
-
-    public function update_data($table, $data, $condition)
-    {
-        return $this->connection->query("update $table set $data where $condition");
+//     public function update_data($table, $data, $condition)
+// {
+    
+//     return $this->connection->query("update $table set $data where $condition");
+// }
+public function update_data($table, $data, $condition)
+{
+    try{
+        $sql = "UPDATE $table SET $data WHERE $condition";
+        echo "Generated SQL query: $sql"; 
+        return $this->connection->query($sql);
+    }catch (PDOException $e) {
+        if ($e->getCode() == '23000') { 
+            $_SESSION['updataError'] = "already exists"; 
+        } else {
+            $_SESSION['updataError'] = "An error occurred while adding"; 
+        return false; 
+       }
     }
-    public function delete_data($table, $condition)
-    {
-        return $this->connection->query("delete from $table where $condition");
-    }
+    
+}
+
+public function delete_data($table, $condition)
+{
+    $query = "DELETE FROM $table WHERE $condition";
+    $result = $this->connection->exec($query);
+    return $result;
+}
+
 }
 
 ?>
+
+

@@ -1,0 +1,103 @@
+/* fonts */
+:root {
+  --Playball: "Playball", cursive;
+  --Roboto: "Roboto Condensed", Arial;
+  --main-color: #4b4b4b;
+  --main-color-50: #363535a1;
+  --red-color: #a72454;
+  --red-color-50: #dd2f6e;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  text-transform: capitalize;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/*! mediaQuery container */
+.container {
+  margin: auto;
+  height: 100%;
+}
+
+/* Extra large screens, TV */
+@media (min-width: 1201px) {
+  .container {
+    width: calc(100% - 300px);
+  }
+}
+
+/* Desktops, large screens */
+@media (max-width: 1200px) {
+  .container {
+    width: calc(100% - 200px);
+  }
+}
+
+/* Small screens, laptops */
+@media (max-width: 1024px) {
+  .container {
+    width: calc(100% - 100px);
+  }
+}
+
+/* iPads, Tablets */
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding-inline: 20px;
+  }
+}
+
+& * img {
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+ul {
+  list-style: none;
+}
+
+& .btnActive {
+  user-select: none;
+}
+
+& .btnActive:hover {
+  cursor: pointer;
+}
+
+& .btnActive:active {
+  transform: translateY(0.5px) scale(0.95);
+}
+
+/*! Header */
+.header {
+  gap: 20px;
+  height: 50px;
+  display: flex;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 500;
+  align-items: center;
+  background-color: #ffffff;
+  justify-content: space-between;
+}
+
+.header ul.routes,
+.header .profile {
+  gap: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.header .profile .image {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 50px;
+}

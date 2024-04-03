@@ -17,8 +17,14 @@ if (isset($_GET['newCategory'])) {
         $_SESSION['db_connection_error'] = "Error connecting to the database"; 
     }
 
-    header("Location: product.php"); 
-    exit; 
+    if (isset($_GET['updata'])){
+        header("Location: editProduct.php"); 
+        exit;
+    }else{
+        header("Location: product.php"); 
+        exit; 
+    }
+
 } else {
     header("Location: product.php"); 
     exit;
