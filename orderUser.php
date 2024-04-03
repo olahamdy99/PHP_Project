@@ -101,7 +101,7 @@ function submitDateRange() {
 </head>
 <body>
 
-<?php include 'nav.php' ?>
+<?php include 'navuser.php' ?>
 
 <div class="container mt-4 bordered">
 <div class="row mt-4 justify-content-center">

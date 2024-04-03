@@ -51,7 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>Login</title>
 </head>
 <body>
-<?php include 'nav.php' ?>
 
     <div class="container">
         <div class="row justify-content-center">
