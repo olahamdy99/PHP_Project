@@ -1,11 +1,18 @@
 <?php
+session_start(); 
+$errors = [];
 
-$errors=[];
-if(isset($_GET['errors'])){
-$errors=json_decode($_GET['errors'], true); 
-
+if(isset($_GET['errors'])) {
+    $errors = json_decode($_GET['errors'], true); 
 }
+
+if ($_SESSION['type_user'] != 'admin') {
+    header("Location: login.php"); 
+    exit;
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,8 +38,8 @@ h1 {
         }
     </style>
 <body>
-    <div class="container">
-        <h1>Cafeteria</h1>
+<?php include 'nav.php' ?>
+<div class ="container">
         <form action="adduser.php" method="post" id="adduser" novalidate enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">name</label>
@@ -76,7 +83,8 @@ h1 {
             <button type="reset" class="btn btn-danger btn-block">Reset</button>
         </form>
     </div>
-    
+    </div>
+
 </body>
 <script src="bootstrap.js"></script>
 </html>

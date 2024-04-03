@@ -15,8 +15,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $hashedPassword = $userData['hash_password'];
 
             if (password_verify($password, $hashedPassword)) {
-                header("Location: success.html");
-                exit;
+                $_SESSION['user_id'] = $userData['id'];
+                $_SESSION['type_user'] = $userData['type_user'];
+
+                if ($userData['type_user'] == 'admin') {
+                    header("Location: adduser1.php");
+                    exit;
+                } elseif ($userData['type_user'] == 'user') {
+                    header("Location: sucsses2.php");
+                    exit;
+                } else {
+                    header("Location: login.php?error=1");
+                    exit;
+                }
             } else {
                 header("Location: login.php?error=1");
                 exit;
@@ -40,6 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>Login</title>
 </head>
 <body>
+<?php include 'nav.php' ?>
+
     <div class="container">
         <div class="row justify-content-center">
             <h1>Cafeteria</h1>

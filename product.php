@@ -1,6 +1,9 @@
 <?php
 include_once 'db.php';
-
+if ($_SESSION['type_user'] != 'admin') {
+    header("Location: login.php"); 
+    exit;
+}
 
 $db = new db(); 
 $result = $db->get_data('category', 'id, name'); 
@@ -32,47 +35,8 @@ foreach ($result as $row) {
 </style>
 
 <body>
+<?php include 'nav.php' ?>
 
-<div class="container-fluid">
-    <div class="row">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#" aria-current="page">Add Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">All Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Add User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">All Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Manual Order</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Checks</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="d-flex align-items-center ps-3 pe-3">
-                    <img src="profile-image.jpg" alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
-                    <span class="ms-2">User Name</span>
-                </div>
-            </div>
-        </nav>
-    </div>
-</div>
 
 <div class="container mt-3">
     <div class="row">

@@ -1,6 +1,11 @@
 <?php
 require ("db.php");
 
+if ($_SESSION['type_user'] != 'admin') {
+    header("Location: login.php"); 
+    exit;
+}
+
 $db = new db();
 
 $records_per_page = 10;
@@ -10,8 +15,8 @@ $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($current_page - 1) * $records_per_page;
 
 $total_records = $db->count_records('users');
-
-$users = $db->get_data('users', '*', null, $records_per_page, $offset);
+$con = "`type_user` != 'admin'";
+$users = $db->get_data('users', '*', $con, $records_per_page, $offset);
 
 ?>
 <!DOCTYPE html>
@@ -26,6 +31,7 @@ $users = $db->get_data('users', '*', null, $records_per_page, $offset);
 </head>
 
 <body>
+<?php include 'nav.php' ?>
 
     <div class="container">
         <h2>All Users</h2>

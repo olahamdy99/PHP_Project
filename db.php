@@ -92,10 +92,12 @@ class db
     {
         return $this->connection->query("update $table set $data where $condition");
     }
+ 
     public function delete_data($table, $condition)
-    {
-        return $this->connection->query("delete from $table where $condition");
-    }
+{
+    return $this->connection->query("DELETE FROM `$table` WHERE $condition");
+}
+
 }
 
 ?>

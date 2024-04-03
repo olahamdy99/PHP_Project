@@ -55,3 +55,4 @@ if ($result) {
     die("Failed to insert data");
 }
 ?>
+<?php include 'nav.php' ?>

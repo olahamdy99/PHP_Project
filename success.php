@@ -1,3 +1,9 @@
+<?php
+session_start();
+$_SEESSION['type']=null;
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

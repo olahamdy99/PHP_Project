@@ -1,6 +1,10 @@
 <?php
 
 require ("db.php");
+if ($_SESSION['type_user'] != 'admin') {
+    header("Location: login.php"); 
+    exit;
+}
 $db = new db();
 $users = $db->get_data("users", 'name');
 
@@ -91,6 +95,8 @@ if (isset($_GET['action']) && $_GET['action'] == "search_date" && isset($_GET['f
 </head>
 
 <body>
+<?php include 'nav.php' ?>
+
 
     <div class='container'>
         <h2>Checks</h2>
