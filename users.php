@@ -1,43 +1,36 @@
+<?php
+require ("db.php");
+
+$db = new db();
+
+$records_per_page = 10;
+
+$current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+$offset = ($current_page - 1) * $records_per_page;
+
+$total_records = $db->count_records('users');
+
+$users = $db->get_data('users', '*', null, $records_per_page, $offset);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Pagination</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>users</title>
 </head>
 
 <body>
 
-    <div class="collapse" id="navbarToggleExternalContent">
-        <div class="bg-dark p-4">
-            <h5 class="text-white h4">Collapsed content</h5>
-            <span class="text-muted">Toggleable via the navbar brand.</span>
-        </div>
-    </div>
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-    </nav>
-    <br>
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <h2>All Users</h2>
-            </div>
-            <div class="col-auto">
-                <a href="adduser1.php" class="btn btn-primary">Add User</a>
-            </div>
-        </div>
+        <h2>All Users</h2>
 
-        <table id="example" class="table table-striped" style="width:100%">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -48,53 +41,42 @@
                 </tr>
             </thead>
             <tbody>
+                <?php while ($user = $users->fetch(PDO::FETCH_ASSOC)): ?>
+                    <tr>
+                        <td>
+                            <?= $user['name'] ?>
+                        </td>
+                        <td>
+                            <?= $user['room'] ?>
+                        </td>
+                        <td>
+                            <?= $user['ext'] ?>
+                        </td>
+                        <td><img src="./img/<?= $user['picture'] ?>" width="100" height="100"></td>
+                        <td>
+                            <a href="editUser.php?id=<?= $user['id'] ?>">Edit</a>
+                            <a href="deleteUser.php?id=<?= $user['id'] ?>">Delete</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
                 <?php
+                $total_pages = ceil($total_records / $records_per_page);
 
-                require ("db.php");
-                $db = new db();
-                $result = $db->get_data("users");
-
-                while ($user = $result->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<tr>";
-                    foreach ($user as $key => $value) {
-
-    
-                        if ($key == "name") {
-                            echo "<td>$value</td>";
-                        } if ($key == "room") {
-                            echo "<td>$value</td>";
-                        }
-                        if ($key == "picture") {
-                            echo "<td><img src='./img/$value' width=100 height=100 ></td>";
-                        }
-                     if ($key == "ext") {
-                        
-                        echo "<td>$value</td>";
-                    }
-
-                       
-                    }
-                    echo "<td>
-        <a href='editUser.php?id={$user['id']}'>Edit</a>
-        
-        <a href='deleteUser.php?id={$user['id']}'>Delete</a>
-    </td>";
-                    echo "</tr>";
+                for ($i = 1; $i <= $total_pages; $i++) {
+                    echo "<li class='page-item'><a class='page-link' href='?page=$i'>$i</a></li>";
                 }
                 ?>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>Name</th>
-                    <th>Room</th>
-                    <th>Exit</th>
-                    <th>Image</th>
-                    <th>Action</th>
-                </tr>
-            </tfoot>
-        </table>
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/js/main.js"></script>
+            </ul>
+        </nav>
+    </div>
+
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 
 </html>
