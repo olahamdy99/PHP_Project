@@ -40,19 +40,22 @@ $img = $_FILES['user_img']['name'];
 move_uploaded_file($from, "./img/".$img);
 
 $table = 'users';
-$cols = 'name, email, hash_password, picture'; 
-$values = '?, ?, ?, ?'; 
+$cols = 'name, email, hash_password,room,Ext, picture'; 
+$values = '?, ?, ?, ?,?,?'; 
 $name = $_POST["name"];
 $email = $_POST["email"];
+$room = $_POST["room"];
+$Ext = $_POST["Ext"];
+
 $hash_password = $hash_password; 
 
-$result = $db->insert_data($table, $cols, $values, [$name, $email, $hash_password, $img]); 
+$result = $db->insert_data($table, $cols, $values, [$name, $email, $hash_password,$room, $Ext,$img]); 
 
 if ($result) {
-    header("Location: success.html");
+    header("Location: users.html");
     exit;
 } else {
-    die("Failed to insert data");
+    die("Failed to insert data");
 }
 ?>
 <?php include 'nav.php' ?>

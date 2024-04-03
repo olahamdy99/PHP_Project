@@ -70,10 +70,13 @@ h1 {
             </div>
     
             <div class="form-group">
-                <label for="room_no">Room Number</label>
-                <input type="text" class="form-control p-2" id="room_no" name="room_no" placeholder="Room Number">
+                <label for="room">Room Number</label>
+                <input type="number" class="form-control p-2" id="room" name="room" placeholder="Room Number">
             </div>
-    
+            <div class="form-group">
+                <label for="Ext">Ext</label>
+                <input type="Ext" class="form-control p-2" id="Ext" name="Ext" placeholder=" Ext">
+            </div>
             <div class="form-group">
                 <label for="exampleFormControlFile1">Profile Picture</label>
                 <input type="file" class="form-control-file" id="user_img" name="user_img">

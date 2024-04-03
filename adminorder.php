@@ -6,7 +6,6 @@ if ($_SESSION['type_user'] != 'admin') {
     exit;
 }
 function deleteOrderAndDetails($orderId, $db) {
-    // Update the order status to 'done'
     $db->update_data("order_details", "status='done'", "order_id='$orderId'");
 }
 

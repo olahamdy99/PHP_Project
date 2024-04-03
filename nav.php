@@ -12,7 +12,7 @@
                             <a class="nav-link active" href="product.php" aria-current="page">Add Product</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">All Products</a>
+                            <a class="nav-link" href="products.php">All Products</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="adduser1.php">Add User</a>

@@ -1,6 +1,9 @@
 <?php
 include_once 'db.php';
-
+if ($_SESSION['type_user'] != 'admin') {
+    header("Location: login.php"); 
+    exit;
+}
 
 $db = new db(); 
 $result = $db->get_data('product'); 
@@ -14,46 +17,8 @@ $result = $db->get_data('product');
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Add Product</title>
 </head>
-<div class="container-fluid">
-    <div class="row">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Add Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#" aria-current="page">All Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Add User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">All Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Manual Order</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Checks</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="d-flex align-items-center ps-3 pe-3">
-                    <img src="profile-image.jpg" alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
-                    <span class="ms-2">User Name</span>
-                </div>
-            </div>
-        </nav>
-    </div>
-</div>
+<?php include 'nav.php' ?>
+
 
 <div class="row container mt-5">
     <div class="col text-end">
@@ -67,6 +32,7 @@ $result = $db->get_data('product');
         <tr>
         <th scope="col">Name</th>
         <th scope="col">Price</th>
+        <th scope="col">Status</th>
         <th scope="col">Image</th>
         <th scope="col">Action</th> 
         </tr>
@@ -83,10 +49,9 @@ $result = $db->get_data('product');
                 echo "<tr>
                 <td>{$row['name']}</td>
                 <td>{$row['price']}</td>
+                <td>{$status}</td>
                 <td><img src='uploads/{$row['image']}' width='70'/></td>
                 <td>
-                    
-                    <a class='btn btn-outline-warning'>$status</a>
                     <a class='btn btn-info' href='btnSubmit.php?action=edit_product&id={$row['id']}' name='edit_product'>Edit</a>
                     <a class='btn btn-danger' onclick=\"return confirmDelete('{$row['name']}', {$row['id']})\" href='#' name='delete_product'>Delete</a>
                 </td>

@@ -24,7 +24,8 @@ if (isset($_POST["addProduct"])) {
     $nameProduct = $_POST['nameProduct'];
     $price = $_POST['price'];
     $category = $_POST['category'];
-    
+    $quantity = $_POST['quantity'];
+
 
     $errors = [];
 
@@ -38,6 +39,7 @@ if (isset($_POST["addProduct"])) {
         $errors['priceProduct_error'] = "Price must be a numeric value greater than 1.";
     }
 
+    // quantity product
     if (!is_numeric($quantity) || $quantity <= 0) {
         $errors['quantityProduct_error'] = "Quantity must be a numeric value greater than 1.";
     }
@@ -83,8 +85,8 @@ if (isset($_POST["addProduct"])) {
         }
 
         // Insert
-        $cols = 'name, price, category_id, image';
-        $values = "'$nameProduct', '$price', '$category', $image_value";
+        $cols = 'name, price, quantity, category_id, image';
+        $values = "'$nameProduct', '$price', '$quantity', '$category', $image_value";
         $inserted = $db->insertData('product', $cols, $values);
         if ($inserted) {
             $_SESSION['inserted_product'] = "Product added successfully.";
@@ -116,6 +118,8 @@ if(isset($_POST["updata_product"]))
     $price = $_POST['price'];
     $category = $_POST['category'];
     $productId = $_POST['id'];
+    $quantity = $_POST['quantity'];
+
 
     $errors = [];
 
@@ -159,7 +163,7 @@ if(isset($_POST["updata_product"]))
     }
 
  
-    $setData = "name = '$nameProduct', price = $price, category_id = $category";
+    $setData = "name = '$nameProduct', price = '$price', quantity ='$quantity',category_id = $category";
     if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $random_name = uniqid() . '_' . mt_rand() . '.' . $file_ext;
         $upload_directory = "uploads/";

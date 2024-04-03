@@ -1,9 +1,13 @@
+
 <?php
 include_once 'db.php';
 if ($_SESSION['type_user'] != 'admin') {
     header("Location: login.php"); 
     exit;
 }
+if ($_SESSION['type_user'] != 'admin') {
+    header("Location: login.php"); 
+    exit;}
 
 $db = new db(); 
 $result = $db->get_data('category', 'id, name'); 
@@ -36,6 +40,7 @@ foreach ($result as $row) {
 
 <body>
 <?php include 'nav.php' ?>
+
 
 
 <div class="container mt-3">

@@ -1,16 +1,19 @@
 <?php
 include_once 'db.php';
 $db = new db();
-
+if ($_SESSION['type_user'] != 'user') {
+    header("Location: login.php"); 
+    exit;
+}
 $result = "";
 
 if(isset($_GET['action']) && $_GET['action'] == "search_date" && isset($_GET['fromDate']) && isset($_GET['toDate'])) {
     $fromDate = $_GET['fromDate'];
     $toDate = $_GET['toDate'];
 
-    $result = $db->get_data("order", "*", "date BETWEEN '$fromDate' AND '$toDate'");
+    $result = $db->get_data("order", "*", "user_id=" . $_SESSION['user_id'] . " AND date BETWEEN '$fromDate' AND '$toDate'");
 } else {
-    $result = $db->get_data("order");
+    $result = $db->get_data("order", "*", "user_id=" . $_SESSION['user_id']);
 }
 ?>
 
@@ -98,30 +101,7 @@ function submitDateRange() {
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#">My Order</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="User Image" class="user-image">
-                    Ebtesam
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<?php include 'nav.php' ?>
 
 <div class="container mt-4 bordered">
 <div class="row mt-4 justify-content-center">
@@ -139,7 +119,6 @@ function submitDateRange() {
 
     <div class="row mt-4">
         <div class="col">
-            <!-- Table to display orders -->
             <table class="table table-striped">
                 <thead>
                     <tr>
