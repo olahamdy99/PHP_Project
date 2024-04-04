@@ -3,8 +3,6 @@ include_once "../db.php";
 $db = new db();
 $getProduct = $db->get_data("product");
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,8 +10,8 @@ $getProduct = $db->get_data("product");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Page</title>
-    <link rel="stylesheet" href="../assets/css/stylee.css">
-    <link rel="stylesheet" href="../assets/css/order.css">
+    <link rel="stylesheet" href="./layout/css/style.css">
+    <link rel="stylesheet" href="./layout/css/order.css">
 </head>
 
 <body>
@@ -35,9 +33,9 @@ $getProduct = $db->get_data("product");
 
         <div class="wrapper">
             <div class="cart">
-                <form action="" method="POST" id="makeOrderForm">
-                    <input disabled type="hidden" name="user_id" id="user_id" value="1">
-                    <input disabled type="hidden" name="items[]" id="items">
+                <form action="admin/includes/create_order.php" method="POST" id="makeOrderForm">
+                    <input type="hidden" name="user_id" id="user_id" value="18">
+                    <input type="hidden" name="items[]" id="items">
                     <div id="itemsContainer" class="items"></div>
 
                     <div class="notes">
@@ -49,12 +47,17 @@ $getProduct = $db->get_data("product");
                         <label for="room">room</label>
                         <select name="room" id="room">
                             <option value="-1"></option>
-                            <option value="r_1">room 1</option>
-                            <option value="r_2">room 2</option>
+                            <?php
+                            // Using PDO to fetch users
+                            $users = $db->get_data("users");
+                            foreach ($users as $position) {
+                                echo '<option value="' . $position['room'] . '_' . $position['ext'] . '">' . $position['room'] . '_' . $position['ext'] . '</option>';
+                            }
+                            ?>
                         </select>
                     </div>
 
-                    <div class="total">EGP ..</div>
+                    <div class="total">EGP <span id="allTitle">0</span></div>
 
                     <div class="confirm">
                         <button name="create_order" type="submit" id="confirm">confirm</button>
@@ -69,30 +72,44 @@ $getProduct = $db->get_data("product");
                         <input type="search" placeholder="search...">
                     </div>
                 </div>
-                <?php  
-                if ($getProduct && $getProduct->rowCount() > 0) {
-                    echo '<div id="orders" class="orders">';
-                    while ($product = $getProduct->fetch(PDO::FETCH_ASSOC)) {
-                        $name_test = $product['name'];
-                        echo "
-                        <div class='order proItem' data-name='{$product['name']}' data-price='{$product['price']}'>
 
-                            <div class='image'>
-                                <img src='../uploads/{$product['image']}' alt='{$product['name']}'>
-                            </div>
-                            <div class='price'>{$product['price']} EGP</div>
-                            <div class='product_name'>{$product['name']}</div>
-                        </div>";
+                <div id="orders" class="orders latestOrders">
+                    <?php
+                    // Using PDO to fetch latest orders
+                    // $latestOrders = $db->get_data("order", "*", "user_id=18");
+                    // foreach ($latestOrders as $order) {
+                    //     $items = json_decode($order['product_items']);
+                    //     foreach ($items as $item) {
+                    //         echo '<div class="order" data-id="' . $item->id . '" data-name="' . $item->product . '" data-price="' . $item->price . '">';
+                    //         echo '<div class="image">';
+                    //         echo '<img src="./layout/images/menu/1.webp" alt="order 1">';
+                    //         echo '</div>';
+                    //         echo '<div class="price">EGP ' . $item->price . '</div>';
+                    //         echo '</div>';
+                    //     }
+                    // }
+                    // ?>
+                </div>
+
+                <h3>menu orders</h3>
+                <div id="orders" class="orders">
+                    <?php
+                    // Using PDO to fetch menu orders
+                    $menuOrders = $db->get_data("product");
+                    foreach ($menuOrders as $order) {
+                        echo '<div class="order" data-id="' . $order['id'] . '" data-name="' . $order['name'] . '" data-price="' . $order['price'] . '">';
+                        echo '<div class="image">';
+                        echo '<img src="./layout/images/menu/1.webp" alt="order 1">';
+                        echo '</div>';
+                        echo '<div class="price">EGP ' . $order['price'] . '</div>';
+                        echo '</div>';
                     }
-                    echo '</div>';
-                }
-                ?>
-
-                
+                    ?>
+                </div>
             </div>
         </div>
     </div>
 </body>
-<script src="../assets/js/script.js"></script>
+<script src="./layout/js/script.js"></script>
 
 </html>

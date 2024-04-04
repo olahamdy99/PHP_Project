@@ -1,3 +1,9 @@
+<?php
+include_once "../db.php"; // Include the database connection file
+$db = new db(); // Create a new instance of the db class
+$getProduct = $db->get_data("product");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,8 +34,9 @@
 
         <div class="wrapper">
             <div class="cart">
-                <form action="./admin/includes/create_userOrder.php" method="POST" id="makeOrderForm">
-                    <input type="hidden" name="user_id" id="user_id" value="">
+                <form action="./admin/includes/create_order.php?role=admin" method="POST" id="makeOrderForm">
+                    <label id="error_items" class="error items"></label>
+                    <input type="hidden" name="user_id" id="user_id">
                     <input type="hidden" name="items[]" id="items">
                     <div id="itemsContainer" class="items"></div>
 
@@ -42,12 +49,25 @@
                         <label for="room">room</label>
                         <select name="room" id="room">
                             <option value="-1"></option>
-                            <option value="r_1">room 1</option>
-                            <option value="r_2">room 2</option>
+                            <?php
+                            // Prepare and execute the query using PDO
+                            $query = "SELECT * FROM `users`";
+                            $statement = $db->getConnection()->prepare($query);
+                            $statement->execute();
+
+                            // Fetch users from the database using PDO
+                            $users = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+                            // Loop through the fetched users to populate the select options
+                            foreach ($users as $user) {
+                                echo '<option value="' . $user['room'] . '_' . $user['ext'] . '">' . $user['room'] . '_' . $user['ext'] . '</option>';
+                            }
+                            ?>
                         </select>
                     </div>
+                    <label id="error_room" class="error error_room"></label>
 
-                    <div class="total">EGP ..</div>
+                    <div class="total">EGP <span id="allTitle">0</span></div>
 
                     <div class="confirm">
                         <button name="create_order" type="submit" id="confirm">confirm</button>
@@ -66,120 +86,37 @@
 
                 <div class="select_user">
                     <label for="select_user_id">select user</label>
+
                     <select name="user_id" id="select_user_id">
                         <option value="-1"></option>
-                        <option value="1">ola hamdy</option>
-                        <option value="2">islam alsayed</option>
-                        <option value="3">ahmed mohammed</option>
+                        <?php
+                        // Loop through the fetched users to populate the select options
+                        foreach ($users as $user) {
+                            echo '<option value="' . $user['id'] . '">' . $user['name'] . '</option>';
+                        }
+                        ?>
                     </select>
+                    <label id="error_user" class="error"></label>
                 </div>
 
                 <div id="orders" class="orders">
-                    <div class="order" data-id="1" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/1.webp" alt="order 1">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-
-                    <div class="order" data-id="2" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/2.webp" alt="order 2">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-
-                    <div class="order" data-id="3" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/3.webp" alt="order 3">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-
-                    <div class="order" data-id="4" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/4.webp" alt="order 4">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-
-                    <div class="order" data-id="5" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/5.webp" alt="order 5">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-
-                    <div class="order" data-id="6" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/6.webp" alt="order 6">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-
-                    <div class="order" data-id="7" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/7.webp" alt="order 7">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-
-                    <div class="order" data-id="8" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/8.webp" alt="order 8">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-
-                    <div class="order" data-id="9" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/9.webp" alt="order 9">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-
-
-                    <div class="order" data-id="10" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/10.webp" alt="order 10">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-                    <div class="order" data-id="11" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/11.webp" alt="order 11">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-                    <div class="order" data-id="12" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/12.webp" alt="order 12">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-                    <div class="order" data-id="13" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/13.webp" alt="order 13">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-                    <div class="order" data-id="14" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/14.webp" alt="order 14">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
-                    <div class="order" data-id="15" data-title="item example" data-price="14">
-                        <div class="image">
-                            <img src="./layout/images/menu/15.webp" alt="order 15">
-                        </div>
-                        <div class="price">EGP 14</div>
-                    </div>
+                    <?php
+                    // Using PDO to fetch menu orders
+                    $menuOrders = $db->get_data("product");
+                    foreach ($menuOrders as $order) {
+                        echo '<div class="order" data-id="' . $order['id'] . '" data-name="' . $order['name'] . '" data-price="' . $order['price'] . '">';
+                        echo '<div class="image">';
+                        echo '<img src="./layout/images/menu/1.webp" alt="order 1">';
+                        echo '</div>';
+                        echo '<div class="price">EGP ' . $order['price'] . '</div>';
+                        echo '</div>';
+                    }
+                    ?>
                 </div>
             </div>
         </div>
     </div>
+    <script src="./layout/js/script.js"></script>
 </body>
-<script src="./layout/js/script.js"></script>
 
 </html>
