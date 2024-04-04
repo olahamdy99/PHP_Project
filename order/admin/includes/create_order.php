@@ -1,7 +1,6 @@
 <?php
-include_once "../../../db.php";
-$db = new db();
-$conn = $db->getConnection(); // Establishing database connection
+include '../config.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['create_order'])) {
@@ -11,6 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $notes = $_POST['notes'];
         $ext = explode('_', $_POST['room'])[0];
         $room = explode('_', $_POST['room'])[1];
+
+        $total = 0;
+        foreach (json_decode($product_items) as $item)  $total += $item->quantity * $item->price;
+
+        // echo $total;
 
         $stmt = $conn->prepare("INSERT INTO `order` (date, product_items, room, Ext, note, user_id)
                                 VALUES (:date, :product_items, :room, :Ext, :note, :user_id)");
@@ -25,22 +29,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'user_id' => $user_id,
         ]);
 
+        $order_id = $conn->lastInsertId();
+
+        $stmt = $conn->prepare("INSERT INTO `order_details` (total,order_id)VALUES (:total,:order_id)");
+
+        // Execute the statement
+        $stmt->execute(['total' => $total, 'order_id' => $order_id]);
+
         // Check if the query was successful
-        if ($stmt->rowCount() > 0) {
-            echo json_encode(array('status' => 'success', 'message' => 'Order created successfully.'));
-            // if ($_GET['role'] == 'admin') {
-            //     header('REFRESH:1; url=http://localhost/coffee_v_2/adminOrder.php');
-            // } elseif ($_GET['role'] == 'user') {
-            //     header('REFRESH:1; url=http://localhost/coffee_v_2/userOrder.php');
-            // }
-            // exit();
-        } else {
-            echo json_encode(array('status' => 'error', 'message' => 'Failed to create order.'));
-        }
+            if ($stmt->rowCount() > 0) {
+                $_SESSION['msg_order'] = "Order added successfully";
+                if($_SESSION['type_user'] == 'admin')
+                {
+                    header("location:../../adminOrder.php");
+                    exit();
+                }elseif($_SESSION['type_user'] == 'user')
+                {
+                    header("location:../../userOrder.php");
+
+                }
+           
+
+            }
+        } 
     } else {
         echo json_encode(array('status' => 'error', 'message' => 'The request must be from the form.'));
     }
-} else {
-    echo json_encode(array('status' => 'error', 'message' => 'Please use the appropriate form to submit data. This page can only be accessed via POST requests.'));
-}
 ?>

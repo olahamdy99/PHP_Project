@@ -19,10 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['type_user'] = $userData['type_user'];
 
                 if ($userData['type_user'] == 'admin') {
-                    header("Location: adduser1.php");
+                    header("Location: order/adminOrder.php");
                     exit;
                 } elseif ($userData['type_user'] == 'user') {
-                    header("Location: sucsses2.php");
+                    header("Location: order/userOrder.php");
                     exit;
                 } else {
                     header("Location: login.php?error=1");
