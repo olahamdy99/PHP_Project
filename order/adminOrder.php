@@ -106,7 +106,7 @@ $getProduct = $db->get_data("product");
                     foreach ($menuOrders as $order) {
                         echo '<div class="order" data-id="' . $order['id'] . '" data-name="' . $order['name'] . '" data-price="' . $order['price'] . '">';
                         echo '<div class="image">';
-                        echo '<img src="./layout/images/menu/1.webp" alt="order 1">';
+                        echo '<img src="../uploads/' . $order['image'] . '" alt="' . $order['name'] . '">';
                         echo '</div>';
                         echo '<div class="price">EGP ' . $order['price'] . '</div>';
                         echo '</div>';
